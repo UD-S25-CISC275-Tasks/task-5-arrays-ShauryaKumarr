@@ -104,27 +104,8 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    const result: number[] = [];
-    let sum = 0;
-    let inserted = false;
-
-    for (let i = 0; i < values.length; i++) {
-        result.push(values[i]);
-
-        // If the current number is negative and we haven't inserted yet
-        if (!inserted && values[i] < 0) {
-            result.push(sum);
-            inserted = true;
-        }
-
-        // Update the running sum after processing the current element
-        sum += values[i];
-    }
-
-    // If no negative number was found, append the sum at the end
-    if (!inserted) {
-        result.push(sum);
-    }
-
-    return result;
+    let idx = values.findIndex((value) => value < 0);
+    idx = idx === -1 ? values.length : idx;
+    const sum = values.slice(0, idx).reduce((acc, curr) => acc + curr, 0);
+    return [...values.slice(0, idx), sum, ...values.slice(idx)];
 }
