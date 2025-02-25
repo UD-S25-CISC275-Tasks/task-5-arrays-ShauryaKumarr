@@ -105,7 +105,11 @@ export function makeMath(addends: number[]): string {
  */
 export function injectPositive(values: number[]): number[] {
     let idx = values.findIndex((value) => value < 0);
+
     idx = idx === -1 ? values.length : idx;
     const sum = values.slice(0, idx).reduce((acc, curr) => acc + curr, 0);
-    return [...values.slice(0, idx), sum, ...values.slice(idx)];
+
+    return idx < values.length ?
+            [...values.slice(0, idx + 1), sum, ...values.slice(idx + 1)]
+        :   [...values, sum];
 }
